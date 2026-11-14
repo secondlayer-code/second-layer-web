@@ -13,7 +13,21 @@
   };
   function motionOff() { return root.classList.contains('motion-off'); }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-  function track(name, props) { try { if (w.plausible) w.plausible(name, { props: props || {} }); } catch (e) {} }
+  /* Sends an event to Google Analytics (only loaded after consent). "done" runs once the event is sent,
+     or after a short wait, so a page change straight afterwards does not lose it. */
+  function track(name, props, done) {
+    var called = false, finish = function () { if (!called) { called = true; if (done) done(); } };
+    try { if (w.plausible) w.plausible(name, { props: props || {} }); } catch (e) {}
+    try {
+      if (w.gtag) {
+        var p = {}; for (var k in (props || {})) p[k] = props[k];
+        if (done) { p.event_callback = finish; p.event_timeout = 800; setTimeout(finish, 1000); }
+        w.gtag('event', name, p);
+        return;
+      }
+    } catch (e) {}
+    finish();
+  }
 
   /* Logo path data, taken from the supplied logo files (not redrawn). */
   var LOGO = w.SL_LOGO = {
@@ -400,7 +414,12 @@
     // Google's script can take a few seconds when it wakes up, so allow 15 seconds before falling back to email.
     var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
     fetch(SL.contact.leadEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), signal: ctrl ? ctrl.signal : undefined })
-      .then(function (r) { clearTimeout(timer); if (!r.ok) throw new Error('bad status'); track('audit_form_sent', { audit: data.audit }); location.href = '/thank-you'; })
+      .then(function (r) {
+        clearTimeout(timer); if (!r.ok) throw new Error('bad status');
+        // generate_lead is Google's standard lead event; audit_form_sent is ours. Both are sent before moving on.
+        track('generate_lead', { form: 'free_audit', business_type: data.type || '' });
+        track('audit_form_sent', { audit: data.audit, business_type: data.type || '', page: data.page }, function () { location.href = '/thank-you'; });
+      })
       .catch(function () { clearTimeout(timer); fallback(); });
   }
   d.addEventListener('submit', function (e) {
@@ -457,7 +476,7 @@
     footEl.innerHTML = '<div class="container"><div class="foot-top"><div><a class="brand" href="/" aria-label="Second Layer home"><img src="/assets/img/favicon.svg" width="40" height="40" alt="" loading="lazy"><span class="wordmark">SECOND LAYER</span></a><p class="foot-tag">' + esc(SL.tagline) + '</p></div>' +
       '<div class="foot-actions"><button class="btn btn-outline" data-open-audit>Free audit' + I.arrow + '</button>' + contactLinks().replace(/<a /g, '<a class="pill-link" ') + '</div></div>' +
       '<nav class="foot-links" aria-label="Footer">' + SL.nav.map(function (n) { return '<a href="' + n.href + '">' + esc(n.label) + '</a>'; }).join('') + '</nav>' +
-      '<div class="foot-base"><span>&copy; ' + new Date().getFullYear() + ' Second Layer. Est. 2026.</span><span class="foot-switches"><button type="button" class="motion-btn" data-motion-toggle aria-pressed="true">' + I.motion + 'Animations: <span class="motion-state">On</span></button><a href="/privacy">Privacy</a></span></div></div>';
+      '<div class="foot-base"><span>&copy; ' + new Date().getFullYear() + ' Second Layer. Est. 2026.</span><span class="foot-switches"><button type="button" class="motion-btn" data-motion-toggle aria-pressed="true">' + I.motion + 'Animations: <span class="motion-state">On</span></button>' + ((SL.analytics && SL.analytics.ga4) ? '<button type="button" class="motion-btn" data-cookie-settings>Cookie settings</button>' : '') + '<a href="/privacy">Privacy</a></span></div></div>';
   }
   /* Phone dock: app-style bar with the free audit button raised in the middle. */
   var dock = d.createElement('nav');
@@ -499,6 +518,53 @@
     } else box.classList.add('apart');
   });
 
+  /* ---------- Google Analytics 4, only after the visitor agrees on the cookie bar ----------
+     Nothing from Google loads until "Accept". It then loads after the page has finished, so it never slows the first view.
+     Not loaded on localhost, so testing does not add fake visits. */
+  var GA = (SL.analytics && SL.analytics.ga4) || '', CONSENT = 'sl_consent';
+  function loadAnalytics() {
+    if (!GA || w.__slGa || location.protocol === 'file:' || /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+    w.__slGa = true;
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = function () { w.dataLayer.push(arguments); };
+    w.gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
+    w.gtag('js', new Date());
+    w.gtag('config', GA);
+    var s = d.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA);
+    d.head.appendChild(s);
+  }
+  function whenIdle(fn) {
+    var go = function () { if ('requestIdleCallback' in w) requestIdleCallback(fn, { timeout: 2000 }); else setTimeout(fn, 600); };
+    if (d.readyState === 'complete') go(); else w.addEventListener('load', go);
+  }
+  var consentBar = null;
+  function showConsent() {
+    if (!GA) return;
+    if (consentBar) { consentBar.classList.add('show'); return; }
+    consentBar = d.createElement('div');
+    consentBar.className = 'consent'; consentBar.setAttribute('role', 'region'); consentBar.setAttribute('aria-label', 'Cookie choice');
+    consentBar.innerHTML = '<p>We use Google Analytics cookies to see how visitors use this site, so we can improve it. No ads, and we never sell your data. <a href="/privacy">Privacy</a></p>' +
+      '<div class="consent-actions"><button type="button" class="btn btn-sm btn-outline" data-consent="denied">Decline</button><button type="button" class="btn btn-sm btn-dark" data-consent="granted">Accept</button></div>';
+    d.body.appendChild(consentBar);
+    setTimeout(function () { consentBar.classList.add('show'); }, 50);
+  }
+  d.addEventListener('click', function (e) {
+    var c = e.target.closest('[data-consent]');
+    if (c) {
+      var choice = c.getAttribute('data-consent');
+      store.set(CONSENT, choice);
+      consentBar.classList.remove('show');
+      if (choice === 'granted') loadAnalytics();
+      else if (w.gtag) w.gtag('consent', 'update', { analytics_storage: 'denied' });
+    }
+    if (e.target.closest('[data-cookie-settings]')) showConsent();
+  });
+  if (GA) {
+    var choice = store.get(CONSENT);
+    if (choice === 'granted') whenIdle(loadAnalytics);
+    else if (choice !== 'denied') setTimeout(showConsent, 1500);
+  }
+
   /* Two layers at the top of the home page: scrolling brings Second Layer up over the business.
      --s2 runs from 1 (hidden below) to 0 (in place); the solutions and the button follow, at the visitor's pace. */
   var scene = $('.layers-scene'), sceneGood = scene ? $$('.msg.good', scene) : [], sceneFoot = scene ? $('.ly-foot', scene) : null;
@@ -522,6 +588,14 @@
     if (b) { region = b.getAttribute('data-region'); store.set('sl_region', region); updatePrices(); track('region_switched', { region: region }); }
     var t = e.target.closest('[data-track]');
     if (t) track(t.getAttribute('data-track'));
+    // Contact clicks, wherever the link sits (header, footer, phone bar, contact page).
+    var a = e.target.closest('a[href]');
+    if (a && !t) {
+      var href = a.getAttribute('href');
+      var place = a.closest('.dock') ? 'phone_bar' : a.closest('.site-footer') ? 'footer' : a.closest('.site-nav') ? 'header' : 'page';
+      if (/^mailto:/.test(href)) track('email_click', { place: place });
+      else if (/instagram\.com/.test(href)) track('instagram_click', { place: place });
+    }
     var link = e.target.closest('.nav-links a');
     if (link && navEl) navEl.classList.remove('open');
   });

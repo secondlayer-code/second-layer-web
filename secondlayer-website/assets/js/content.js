@@ -18,6 +18,11 @@ window.SL = {
     leadEndpoint: "/api/lead"
   },
 
+  // Analytics. Loaded only after a visitor clicks "Accept" on the cookie bar. Blank = switched off.
+  analytics: {
+    ga4: "G-WZBCX4V5T2"
+  },
+
   flags: {
     foundingOffer: true // slim banner on the pricing page
   },

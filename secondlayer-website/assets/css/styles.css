@@ -839,6 +839,19 @@ body.locked { overflow: hidden; }
   .cities { grid-template-columns: 1fr 1fr; gap: 40px; }
 }
 
+/* ---------- Cookie bar (Google Analytics loads only after "Accept") ---------- */
+.btn-dark { background: var(--text); color: var(--bg); border-color: var(--text); }
+.btn-dark:hover { opacity: 0.9; }
+.consent { position: fixed; z-index: 150; left: 10px; right: 10px; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; padding: 14px 16px;
+  border-radius: 18px; background: var(--surface); color: var(--text); border: 1px solid var(--line-strong); box-shadow: var(--shadow); font-size: 0.86rem; line-height: 1.5;
+  opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity 0.3s, transform 0.3s var(--ease); }
+.consent.show { opacity: 1; transform: none; pointer-events: auto; }
+.consent p { color: var(--muted); }
+.consent a { color: var(--text); text-decoration: underline; }
+.consent-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.consent-actions .btn { min-width: 96px; }
+@media (min-width: 960px) { .consent { left: auto; right: 24px; bottom: 24px; max-width: 420px; } }
+
 /* ---------- Motion off switch (also set automatically for reduced-motion users) ---------- */
 .motion-off *, .motion-off *::before, .motion-off *::after { animation: none !important; transition-duration: 0.01ms !important; transition-delay: 0s !important; scroll-behavior: auto !important; }
 .motion-off { scroll-behavior: auto; }
