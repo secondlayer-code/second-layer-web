@@ -397,7 +397,8 @@
     }
     if (!SL.contact.leadEndpoint || location.protocol === 'file:') { fallback(); return; }
     var ctrl = w.AbortController ? new AbortController() : null;
-    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 8000);
+    // Google's script can take a few seconds when it wakes up, so allow 15 seconds before falling back to email.
+    var timer = setTimeout(function () { if (ctrl) ctrl.abort(); }, 15000);
     fetch(SL.contact.leadEndpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data), signal: ctrl ? ctrl.signal : undefined })
       .then(function (r) { clearTimeout(timer); if (!r.ok) throw new Error('bad status'); track('audit_form_sent', { audit: data.audit }); location.href = '/thank-you'; })
       .catch(function () { clearTimeout(timer); fallback(); });
