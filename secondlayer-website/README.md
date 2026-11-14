@@ -49,6 +49,10 @@ Everything is in `assets/js/content.js`:
 - **Photos:** stored in `assets/img/photos` in three sizes (480, 800 and 1200 pixels wide). Each `img` value in `content.js` is the file name without the size, for example `website-design-for-local-business`. The photos are from Unsplash (free licence).
 - **Free business check questions:** edit `check`.
 
+## Text for Google and AI search
+
+The page files already contain the full text (services, pricing, FAQ, menus), so search engines can read it without running scripts. If you change text or prices in `assets/js/content.js`, visitors see the change immediately, but the copy that search engines read is refreshed only when the pages are regenerated. Ask Claude to "refresh the search text" after editing.
+
 ## After every update
 
 Re-upload the changed files to GitHub (**Add file > Upload files**, then commit). Files with the same name are replaced. Vercel republishes within a minute.

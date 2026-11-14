@@ -34,7 +34,6 @@ window.SL = {
   ],
 
   businessTypes: ["Cafe / Restaurant", "Salon", "Gym", "Clinic", "Car studio", "Hotel", "Other"],
-
   tagline: "Your business needs a second layer.",
 
   /* ---------- Problems we solve ---------- */
@@ -81,7 +80,7 @@ window.SL = {
   },
   services: [
     {
-      id: "websites", img: "website-design-for-local-business", imgAlt: "Laptop keyboard lit in violet and orange light, website design for local businesses", icon: "globe",
+      id: "websites", color: "#2B2560", img: "website-design-for-local-business", imgAlt: "Laptop keyboard lit in violet and orange light, website design for local businesses", icon: "globe",
       name: "Websites", outcome: "Make your first impression count.",
       summary: "Professional, fast, mobile-friendly websites that build trust and turn visitors into customers.",
       description: "Get a professional, fast, and mobile-friendly website that showcases your business, builds trust, and turns visitors into customers.",
@@ -90,7 +89,7 @@ window.SL = {
       from: { in: 11999, intl: 600 }
     },
     {
-      id: "systems", img: "qr-menu-online-ordering-system", imgAlt: "Phone on a cafe table next to the menu, QR menu and online ordering system", icon: "calendar",
+      id: "systems", color: "#6A3FD1", img: "qr-menu-online-ordering-system", imgAlt: "Phone on a cafe table next to the menu, QR menu and online ordering system", icon: "calendar",
       name: "Booking & Ordering Systems", outcome: "Let customers book, order, and interact on their own.",
       summary: "Appointments, QR ordering, room bookings and memberships, without waiting for a phone call.",
       description: "Make it easier for customers to access your services without waiting for a phone call. We build simple, customised systems that help manage bookings, orders, and enquiries.",
@@ -99,7 +98,7 @@ window.SL = {
       from: { in: 14999, intl: 1200 }
     },
     {
-      id: "automation", img: "whatsapp-business-automation", imgAlt: "Person replying to a customer message on a phone, WhatsApp business automation", icon: "bolt",
+      id: "automation", color: "#1F6E99", img: "whatsapp-business-automation", imgAlt: "Person replying to a customer message on a phone, WhatsApp business automation", icon: "bolt",
       name: "Business Automation", outcome: "Stop doing manually what technology can do for you.",
       summary: "Workflows that reply to enquiries, send reminders and follow up, so you don't have to.",
       description: "Save time and reduce repetitive work with automated workflows that handle everyday tasks, respond to enquiries, and keep your business running smoothly.",
@@ -108,7 +107,7 @@ window.SL = {
       from: { in: 7499, intl: 450 }
     },
     {
-      id: "gbp", img: "google-business-profile-local-seo", imgAlt: "Hand holding a phone showing a map with a location pin, Google Business Profile local SEO", icon: "pin",
+      id: "gbp", color: "#8A3FC2", img: "google-business-profile-local-seo", imgAlt: "Hand holding a phone showing a map with a location pin, Google Business Profile local SEO", icon: "pin",
       name: "Google Business Profile + NFC Review Card", outcome: "Get discovered locally. Make it easier for customers to trust you.",
       summary: "An optimised Google Business Profile, plus a custom tap-to-review NFC card.",
       description: "Improve how your business appears on Google and make collecting customer reviews easier with a tap-to-review NFC card.",

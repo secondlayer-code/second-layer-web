@@ -398,7 +398,7 @@
   function syncSwitches() {
     var light = root.getAttribute('data-theme') === 'light';
     $$('[data-theme-toggle]').forEach(function (b) { b.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode'); });
-    var meta = $('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', light ? '#F7F3FF' : '#0D0817');
+    var meta = $('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', light ? '#F3F1FA' : '#0D0817');
     $$('[data-motion-toggle]').forEach(function (b) {
       b.setAttribute('aria-pressed', motionOff() ? 'false' : 'true');
       var s = $('.motion-state', b); if (s) s.textContent = motionOff() ? 'Off' : 'On';
@@ -436,7 +436,7 @@
   }
   var footEl = $('#site-footer');
   if (footEl) {
-    footEl.className = 'site-footer';
+    footEl.className = 'site-footer on-dark';
     footEl.innerHTML = '<div class="container"><div class="foot-top"><div><a class="brand" href="/" aria-label="Second Layer home"><img src="/assets/img/favicon.svg" width="40" height="40" alt="" loading="lazy"><span class="wordmark">SECOND LAYER</span></a><p class="foot-tag">' + esc(SL.tagline) + '</p></div>' +
       '<div class="foot-actions"><button class="btn btn-outline" data-open-audit>Free audit' + I.arrow + '</button>' + contactLinks().replace(/<a /g, '<a class="pill-link" ') + '</div></div>' +
       '<nav class="foot-links" aria-label="Footer">' + SL.nav.map(function (n) { return '<a href="' + n.href + '">' + esc(n.label) + '</a>'; }).join('') + '</nav>' +
@@ -482,9 +482,14 @@
     } else box.classList.add('apart');
   });
 
-  /* Greeting intro: tap anywhere to skip it. */
+  /* Opening: tap anywhere to skip it; it also removes itself when its last animation ends (or after 4.5s at most). */
   var intro = $('.intro');
-  if (intro) intro.addEventListener('click', function () { root.classList.add('intro-done'); });
+  if (intro && !root.classList.contains('no-intro')) {
+    var introDone = function () { root.classList.add('intro-done'); };
+    intro.addEventListener('click', introDone);
+    intro.addEventListener('animationend', function (e) { if (e.target === intro) introDone(); });
+    setTimeout(introDone, 4500);
+  }
 
   d.addEventListener('click', function (e) {
     var b = e.target.closest('.region button');
