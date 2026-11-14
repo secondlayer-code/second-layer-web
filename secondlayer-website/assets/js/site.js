@@ -112,7 +112,7 @@
 
   /* Problems: a switch flips every card from "without" to "with a second layer". */
   R.problems = function (el) {
-    el.innerHTML = '<div class="switch-wrap"><button class="layer-switch" role="switch" aria-checked="false"><span class="ls-label off">Without</span><span class="ls-track"><span class="ls-knob"><img src="/assets/img/favicon.svg" alt="" width="22" height="22"></span></span><span class="ls-label on">With a second layer</span></button><p class="switch-hint">Tap the switch, or tap any card</p></div>' +
+    el.innerHTML = '<div class="switch-wrap"><button class="layer-switch" role="switch" aria-checked="false"><span class="ls-label off">Without</span><span class="ls-track"><span class="ls-knob"><img class="logo-light" src="/assets/img/logo-light.svg" alt="" width="22" height="22"><img class="logo-dark" src="/assets/img/favicon.svg" alt="" width="22" height="22"></span></span><span class="ls-label on">With a second layer</span></button><p class="switch-hint">Tap the switch, or tap any card</p></div>' +
       '<div class="flip-grid grid c3">' + SL.problems.map(function (p) {
         return '<button class="flip" aria-pressed="false"><span class="flip-inner"><span class="flip-face front"><span class="flip-tag">Without</span><span class="icon-chip">' + I[p.icon] + '</span><strong>' + esc(p.title) + '</strong><span class="flip-text">' + esc(p.text) + '</span></span>' +
           '<span class="flip-face back"><span class="flip-tag">With a second layer</span><span class="icon-chip">' + I.check + '</span><strong>' + esc(p.fixTitle) + '</strong><span class="flip-text">' + esc(p.fix) + '</span></span></span></button>';
@@ -127,6 +127,21 @@
     });
     cards.forEach(function (c) { c.addEventListener('click', function () { flip(c, !c.classList.contains('flipped'), 0); }); });
   };
+
+  /* Saves a finished business check (score and answers only, nothing personal) to the same sheet as the leads.
+     Fire and forget: the visitor never waits for it, and a failure changes nothing on screen. */
+  var sentChecks = 0;
+  function sendCheck(score, need, answers) {
+    if (!SL.contact.leadEndpoint || location.protocol === 'file:' || sentChecks >= 3) return;
+    sentChecks++;
+    answers = (answers || []).slice(0, 6);
+    try {
+      fetch(SL.contact.leadEndpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true,
+        body: JSON.stringify({ kind: 'check', score: score, answers: answers, needs: need.map(function (id) { return serviceById(id).name; }).join(', '), page: location.pathname, region: region, utm: utm() })
+      }).catch(function () {});
+    } catch (e) {}
+  }
 
   /* Free business check: six questions, a score, the gaps and a starting estimate. */
   R.check = function (el) {
@@ -162,6 +177,7 @@
           : '<p class="check-sub">Nothing obvious is missing. A free audit can confirm it and spot smaller gaps.</p>') +
         '<div class="check-actions"><button class="btn btn-coral" data-open-audit data-interest="' + esc(interest) + '">Get my free audit' + I.arrow + '</button><button type="button" class="check-again" data-restart>Start again</button></div>';
       track('business_check_done', { score: yes });
+      sendCheck(yes, need, answers);
     }
     el.addEventListener('click', function (e) {
       var a = e.target.closest('[data-a]');
@@ -420,7 +436,7 @@
   var navEl = $('#site-nav');
   if (navEl) {
     navEl.className = 'site-nav';
-    navEl.innerHTML = '<div class="container nav-inner"><a class="brand" href="/" aria-label="Second Layer home"><img src="/assets/img/favicon.svg" width="34" height="34" alt=""><span class="wordmark">SECOND LAYER</span></a>' +
+    navEl.innerHTML = '<div class="container nav-inner"><a class="brand" href="/" aria-label="Second Layer home"><img class="logo-light" src="/assets/img/logo-light.svg" width="34" height="34" alt=""><img class="logo-dark" src="/assets/img/favicon.svg" width="34" height="34" alt=""><span class="wordmark">SECOND LAYER</span></a>' +
       '<nav class="nav-links" id="nav-links" aria-label="Main">' + SL.nav.map(function (n) {
         return '<a href="' + n.href + '"' + (n.page === page ? ' aria-current="page"' : '') + '>' + esc(n.label) + (n.tag ? '<span class="nav-tag">' + esc(n.tag) + '</span>' : '') + '</a>';
       }).join('') + '<div class="nav-contact">' + contactLinks() + '<button type="button" class="motion-btn" data-motion-toggle aria-pressed="true">' + I.motion + 'Animations: <span class="motion-state">On</span></button></div></nav>' +
@@ -482,13 +498,22 @@
     } else box.classList.add('apart');
   });
 
-  /* Opening: tap anywhere to skip it; it also removes itself when its last animation ends (or after 4.5s at most). */
-  var intro = $('.intro');
-  if (intro && !root.classList.contains('no-intro')) {
-    var introDone = function () { root.classList.add('intro-done'); };
-    intro.addEventListener('click', introDone);
-    intro.addEventListener('animationend', function (e) { if (e.target === intro) introDone(); });
-    setTimeout(introDone, 4500);
+  /* Two layers at the top of the home page: scrolling brings Second Layer up over the business.
+     --s2 runs from 1 (hidden below) to 0 (in place); the solutions and the button follow, at the visitor's pace. */
+  var scene = $('.layers-scene'), sceneGood = scene ? $$('.msg.good', scene) : [], sceneFoot = scene ? $('.ly-foot', scene) : null;
+  function updateScene() {
+    if (!scene) return;
+    var p = 1;
+    if (!motionOff()) {
+      var r = scene.getBoundingClientRect(), total = scene.offsetHeight - w.innerHeight;
+      p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 1;
+    }
+    var k = Math.min(1, Math.max(0, (p - 0.06) / 0.36)), eased = k * k * (3 - 2 * k);
+    scene.style.setProperty('--s2', (1 - eased).toFixed(3));
+    scene.classList.toggle('is-two', p > 0.18);
+    sceneGood.forEach(function (g, i) { g.classList.toggle('on', p > 0.44 + i * 0.1); });
+    if (sceneFoot) sceneFoot.classList.toggle('on', p > 0.72);
+    scene.classList.toggle('is-done', p > 0.78);
   }
 
   d.addEventListener('click', function (e) {
@@ -560,6 +585,7 @@
     ticking = false;
     var y = w.scrollY || w.pageYOffset, vh = w.innerHeight;
     if (navEl) navEl.classList.toggle('scrolled', y > 10);
+    updateScene();
     // The line fills as you read down the steps: motion that guides the eye.
     timelines.forEach(function (el) {
       var r = el.getBoundingClientRect();
@@ -572,5 +598,6 @@
   }
   w.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   w.addEventListener('sl:motion', onScroll);
+  w.addEventListener('resize', onScroll);
   onScroll();
 })();
