@@ -2,54 +2,82 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Second Layer | Websites, automation and Google profile for local businesses</title>
-<meta name="description" content="Second Layer builds websites, booking and ordering systems, automation and Google Business Profile upgrades that bring local customers in and reply to them while you work.">
-<meta name="theme-color" content="#160F2A">
-<link rel="canonical" href="https://secondlayer.co.in/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Website Design, Booking Systems &amp; Google Business Profile for Local Businesses | Second Layer</title>
+<meta name="description" content="Second Layer builds fast websites, online booking and QR ordering systems, WhatsApp automation and Google Business Profile setups for cafes, salons, gyms, clinics, car studios and hotels. Get a free business audit.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0D0817">
+<link rel="canonical" href="https://www.secondlayer.co.in/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Second Layer">
-<meta property="og:title" content="Your business needs a second layer.">
-<meta property="og:description" content="Websites, booking systems, automation and Google profile upgrades for local businesses.">
-<meta property="og:url" content="https://secondlayer.co.in/">
-<meta property="og:image" content="https://secondlayer.co.in/assets/img/second-layer-logo-dark-bg.png">
+<meta property="og:locale" content="en_IN">
+<meta property="og:title" content="Your business needs a second layer | Second Layer">
+<meta property="og:description" content="Websites, booking systems, automation and Google Business Profile setups that bring local customers in, even when you're busy or closed. Free business audit.">
+<meta property="og:url" content="https://www.secondlayer.co.in/">
+<meta property="og:image" content="https://www.secondlayer.co.in/assets/img/second-layer-logo-dark-bg.png">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="2000">
+<meta property="og:image:alt" content="Second Layer logo: S and L tiles">
 <meta name="twitter:card" content="summary">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="assets/img/favicon.ico" sizes="any">
-<link rel="apple-touch-icon" href="assets/img/favicon-180.png">
+<meta name="twitter:title" content="Your business needs a second layer | Second Layer">
+<meta name="twitter:description" content="Websites, booking systems, automation and Google Business Profile setups for local businesses. Free business audit.">
+<meta name="twitter:image" content="https://www.secondlayer.co.in/assets/img/second-layer-logo-dark-bg.png">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/img/favicon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&text=SECONDLAYER&display=swap">
-<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link rel="stylesheet" href="assets/css/styles.css">
+<!-- Fonts load without blocking the first paint; system fonts show until they arrive. -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo+Black&text=SECONDLAYRUG&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&text=SECONDLAYRUG&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/styles.css">
 <script>
-/* Decide before first paint whether this device gets the 3D hero or the light static one. */
-(function(d){var r=d.documentElement;r.classList.add('js');
-/* The greeting intro plays once per visit, and never for visitors who asked for reduced motion. */
-try{if(sessionStorage.getItem('sl_intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)r.classList.add('no-intro');else{r.classList.add('intro-on');sessionStorage.setItem('sl_intro','1')}}catch(e){r.classList.add('intro-on')}
-try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n.hardwareConcurrency||4,g=n.deviceMemory||4,s=n.connection&&n.connection.saveData;if(!m&&c>=4&&g>=4&&!s)r.classList.add('has-3d')}catch(e){}})(document);
+/* Before first paint: saved theme, the animations switch, whether this device gets the 3D hero, and the once-per-visit greeting. */
+(function(d){var r=d.documentElement;r.classList.add('js');function g(k){try{return localStorage.getItem(k)}catch(e){return null}}
+r.setAttribute('data-theme',g('sl_theme')==='light'?'light':'dark');
+var m=g('sl_motion'),rm=false;try{rm=matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+if(m==='off'||(m!=='on'&&rm))r.classList.add('motion-off');
+try{var n=navigator,c=n.hardwareConcurrency||4,mem=n.deviceMemory||4,s=n.connection&&n.connection.saveData;if(c>=4&&mem>=4&&!s){r.setAttribute('data-3d-capable','1');if(!r.classList.contains('motion-off'))r.classList.add('has-3d')}}catch(e){}
+try{if(sessionStorage.getItem('sl_intro'))r.classList.add('no-intro');else sessionStorage.setItem('sl_intro','1')}catch(e){}})(document);
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfessionalService","name":"Second Layer","url":"https://secondlayer.co.in/","email":"support.secondlayer@gmail.com","image":"https://secondlayer.co.in/assets/img/second-layer-logo-dark-bg.png","description":"Websites, booking and ordering systems, automation and Google Business Profile upgrades for local businesses.","areaServed":["IN","GB","US","CA","AE"],"sameAs":["https://www.instagram.com/secondlayer.co.in"]}
+{"@context":"https://schema.org","@graph":[
+{"@type":"ProfessionalService","@id":"https://www.secondlayer.co.in/#business","name":"Second Layer","url":"https://www.secondlayer.co.in/","logo":"https://www.secondlayer.co.in/assets/img/favicon-512.png","image":"https://www.secondlayer.co.in/assets/img/second-layer-logo-dark-bg.png","email":"support.secondlayer@gmail.com","slogan":"Your business needs a second layer.","description":"Second Layer builds websites, booking and ordering systems, business automation and Google Business Profile setups with NFC review cards for local businesses.","foundingDate":"2026","priceRange":"₹1,999 - ₹14,999+","areaServed":[{"@type":"Country","name":"India"},{"@type":"Country","name":"United Kingdom"},{"@type":"Country","name":"United States"},{"@type":"Country","name":"Canada"},{"@type":"Country","name":"United Arab Emirates"}],"knowsAbout":["Website design","Online booking systems","QR menu ordering","WhatsApp automation","Google Business Profile optimisation","NFC review cards","Local SEO"],"sameAs":["https://www.instagram.com/secondlayer.co.in"],
+"hasOfferCatalog":{"@type":"OfferCatalog","name":"Second Layer services","itemListElement":[
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Websites","url":"https://www.secondlayer.co.in/services#websites"},"priceSpecification":{"@type":"PriceSpecification","minPrice":11999,"priceCurrency":"INR"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Booking & Ordering Systems","url":"https://www.secondlayer.co.in/services#systems"},"priceSpecification":{"@type":"PriceSpecification","minPrice":14999,"priceCurrency":"INR"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Business Automation","url":"https://www.secondlayer.co.in/services#automation"},"priceSpecification":{"@type":"PriceSpecification","minPrice":7499,"priceCurrency":"INR"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Google Business Profile + NFC Review Card","url":"https://www.secondlayer.co.in/services#gbp"},"priceSpecification":{"@type":"PriceSpecification","minPrice":1999,"priceCurrency":"INR"}}]}},
+{"@type":"WebSite","@id":"https://www.secondlayer.co.in/#website","url":"https://www.secondlayer.co.in/","name":"Second Layer","inLanguage":"en","publisher":{"@id":"https://www.secondlayer.co.in/#business"}},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"How long does it take?","acceptedAnswer":{"@type":"Answer","text":"A website takes 3 to 4 business days. A booking or ordering system takes 1 to 2 weeks, and an automation 5 to 7 business days. The NFC review card is delivered across India within 2 weeks."}},
+{"@type":"Question","name":"What do you need from me?","acceptedAnswer":{"@type":"Answer","text":"Your logo, photos, a list of services with prices, and your business details. If you do not have good photos or text, we will help you put them together."}},
+{"@type":"Question","name":"Who owns the website?","acceptedAnswer":{"@type":"Answer","text":"You do. After the final payment, the website, the domain and all the content are yours."}},
+{"@type":"Question","name":"Are there monthly costs?","acceptedAnswer":{"@type":"Answer","text":"There is no fixed monthly fee. Domain and hosting are included for the first year where specified. Third-party subscriptions, paid APIs and WhatsApp API charges are only added if your project needs them, and we agree them with you first."}},
+{"@type":"Question","name":"What is free, and what is paid?","acceptedAnswer":{"@type":"Answer","text":"The business audit is free: we check your website and Google profile and tell you what we find. Every service, including the Google Business Profile setup and NFC review card, is paid, at the prices shown on our pricing page."}},
+{"@type":"Question","name":"How do I pay?","acceptedAnswer":{"@type":"Answer","text":"50% in advance to start and 50% at launch. We share the scope, timeline and final cost before any work begins."}},
+{"@type":"Question","name":"You are a new studio. Why should I trust you?","acceptedAnswer":{"@type":"Answer","text":"Fair question. We will not show you invented reviews. This website is our first project, so judge us by it. The audit is free, and you only pay if the plan makes sense to you."}}]}
+]}
 </script>
 </head>
 <body data-page="home">
-<!-- Greeting intro: one greeting for each market we serve, then the brand. Runs on CSS alone. -->
+<!-- Greeting intro: one greeting for each market we serve, then the brand. Tap to skip. -->
 <div class="intro" aria-hidden="true">
   <div class="intro-words"><span>Namaste</span><span>Hello</span><span>Bonjour</span><span>Marhaba</span></div>
-  <div class="intro-brand"><img src="assets/img/favicon.svg" width="92" height="92" alt=""><b>SECOND LAYER</b></div>
+  <div class="intro-brand"><img src="/assets/img/favicon.svg" width="88" height="88" alt=""><b>SECOND LAYER</b></div>
+  <span class="intro-skip">Tap to skip</span>
 </div>
 <a class="skip" href="#main">Skip to content</a>
 <header id="site-nav"></header>
 
 <main id="main">
-  <!-- 1. Hero -->
+  <!-- 1. Hero: who it is for, the result, the next step -->
   <section class="hero" id="hero">
     <div class="hero-stage">
       <div class="hero-visual" aria-hidden="true">
         <canvas id="hero-canvas"></canvas>
-        <div class="hero-fallback"><img src="assets/img/favicon.svg" width="380" height="380" alt=""></div>
+        <div class="hero-fallback"><img src="/assets/img/favicon.svg" width="360" height="360" alt=""></div>
         <div class="stack-label top">Your business<small>What you already do well</small></div>
         <div class="stack-label bottom">Second Layer<small>Replies &middot; Bookings &middot; Google</small></div>
       </div>
@@ -57,38 +85,26 @@ try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n
         <div class="hero-a">
           <span class="eyebrow">For local businesses</span>
           <h1>Your business needs a <span class="hl">second layer</span>.</h1>
-          <p class="lead">One that works alongside you and never stops working. It answers enquiries, takes bookings and brings customers in, even when you are busy or closed.</p>
+          <p class="lead"><strong>More enquiries, bookings and Google reviews</strong> for cafes, salons, gyms, clinics, car studios and hotels, even when you're busy or closed.<span class="lead-more"> We build the website, booking system and automations that keep working for you.</span></p>
           <div class="hero-actions">
             <button class="btn btn-coral" data-open-audit data-icon-after="arrow">Get my free audit</button>
-            <a class="btn btn-ghost" href="pricing.html">See pricing</a>
+            <p class="hero-note"><span>Free &middot; No obligation</span><a href="#check">Check your business in 60 seconds</a></p>
           </div>
-          <ul class="hero-chips">
-            <li>Works while you work</li>
-            <li>Works while you sleep</li>
-            <li>Free audit, no obligation</li>
-          </ul>
         </div>
         <div class="hero-b">
           <span class="eyebrow">The idea</span>
           <h2>The first layer is you. The second one <span class="hl">never stops working</span>.</h2>
-          <p class="muted">Your people, your place, your work on top. Underneath, a website, booking system and automations that keep going when you are busy or closed.</p>
+          <p class="muted">Your people, your place, your work on top. Underneath, a website, booking system and automations that keep going when you're busy or closed.</p>
         </div>
       </div>
       <div class="scroll-hint" aria-hidden="true">Scroll</div>
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Cafes</span><span>Salons</span><span>Gyms</span><span>Clinics</span><span>Car studios</span><span>Hotels</span><span>Restaurants</span><span>Wellness centres</span>
-      <span>Cafes</span><span>Salons</span><span>Gyms</span><span>Clinics</span><span>Car studios</span><span>Hotels</span><span>Restaurants</span><span>Wellness centres</span>
-    </div>
-  </div>
-
   <!-- 2. Problems we solve -->
   <section class="section" id="problems">
     <div class="container">
-      <div class="section-head center rv">
+      <div class="section-head center">
         <span class="eyebrow">Problems we solve</span>
         <h2>Flip the switch. Watch the <span class="hl">gaps close</span>.</h2>
         <p>Good local businesses lose customers in small gaps: a missed call, an outdated Google profile, no way to book at 11 pm. See what changes with a second layer.</p>
@@ -97,10 +113,25 @@ try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n
     </div>
   </section>
 
-  <!-- 3. Industry selector -->
+  <!-- 3. Free business check (the free sample) -->
+  <section class="section depth" id="check">
+    <div class="depth-back" aria-hidden="true">
+      <img src="/assets/img/photos/cafe-restaurant-website-and-ordering-1200.webp" srcset="/assets/img/photos/cafe-restaurant-website-and-ordering-800.webp 800w, /assets/img/photos/cafe-restaurant-website-and-ordering-1200.webp 1200w" sizes="100vw" alt="" loading="lazy" decoding="async" width="1200" height="900">
+    </div>
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Free business check</span>
+        <h2>Is your business <span class="hl">losing customers</span> online?</h2>
+        <p>Answer six quick questions. You get a score, the gaps, and a starting estimate to fix them. No sign-up needed.</p>
+      </div>
+      <div class="check-wrap"><div class="card" data-render="check"></div></div>
+    </div>
+  </section>
+
+  <!-- 4. Pick your business -->
   <section class="section" id="industries">
     <div class="container">
-      <div class="section-head center rv">
+      <div class="section-head center">
         <span class="eyebrow">Built for your business</span>
         <h2>Pick your business. See <span class="hl">your second layer</span>.</h2>
         <p>Tap the one you run.</p>
@@ -109,39 +140,43 @@ try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n
     </div>
   </section>
 
-  <!-- 4. Services -->
-  <section class="section" id="services">
-    <div class="container">
-      <div class="section-head rv">
-        <span class="eyebrow">Services</span>
-        <h2>What your second layer is <span class="hl">made of</span>.</h2>
-        <p>Four parts. Take one, or stack them into a package.</p>
+  <!-- 5. Services: heading band, with the cards crossing its bottom edge -->
+  <section class="band-section" id="services">
+    <div class="band-head">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow">Services</span>
+          <h2>One business. <span class="hl">Four ways to grow.</span></h2>
+          <p>Take one, or combine them. Every service is built around your business.</p>
+        </div>
       </div>
+    </div>
+    <div class="container band-pull">
       <div data-render="service-cards"></div>
       <p class="swipe-hint" data-icon-after="arrow">Swipe to see all four</p>
-      <p class="center rv" style="margin-top:32px"><a class="link-arrow" href="services.html" data-icon-after="arrow">See every service in detail</a></p>
+      <p class="center" style="margin-top:28px"><a class="link-arrow" href="/services" data-icon-after="arrow">See every service in detail</a></p>
     </div>
   </section>
 
-  <!-- 5. See it working -->
+  <!-- 6. Try it yourself -->
   <section class="section" id="demo">
     <div class="container">
-      <div class="section-head rv">
+      <div class="section-head">
         <span class="eyebrow">Try it yourself</span>
         <h2>Be the customer. <span class="hl">Message a business</span> at midnight.</h2>
         <p>These are concept demos. Tap around and see what your customers would get.</p>
       </div>
       <div class="demo-grid">
-        <article class="card demo-card rv">
+        <article class="card demo-card">
           <span class="tag">Concept demo</span>
           <h3>Nobody is at the desk. Ask anyway.</h3>
           <p>Tap a question below. The reply comes from an automation, not a person.</p>
           <div data-render="chat"></div>
         </article>
-        <article class="card demo-card rv" style="--d:.1s">
+        <article class="card demo-card">
           <span class="tag">Concept demo</span>
           <h3>Found nearby, reviewed with one tap</h3>
-          <p>A complete Google profile shows the details people look for. The NFC card turns a happy visit into a review.</p>
+          <p>A complete Google profile shows the details people look for. The NFC review card turns a happy visit into a review.</p>
           <div class="gbp">
             <div class="gbp-search" data-icon="search">salon near me</div>
             <div class="gbp-result">
@@ -149,30 +184,17 @@ try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n
               <div class="meta">Open now &middot; Correct hours &middot; Photos added</div>
               <div class="gbp-chips"><span>Call</span><span>Directions</span><span>Book</span><span>Services</span><span>Reviews</span></div>
             </div>
-            <div class="gbp-rows"><div></div><div></div></div>
           </div>
-          <div class="nfc" data-nfc>
-            <button class="nfc-card" type="button" data-icon="nfc" aria-label="Tap the NFC review card">TAP TO REVIEW</button>
-            <div class="nfc-out">
-              <p class="nfc-idle">Tap the card to see what your customer sees.</p>
-              <div class="nfc-done" role="status">
-                <b>Review page opened</b>
-                <span class="stars" aria-hidden="true"><span style="--i:0">&#9733;</span><span style="--i:1">&#9733;</span><span style="--i:2">&#9733;</span><span style="--i:3">&#9733;</span><span style="--i:4">&#9733;</span></span>
-                <small>One tap. No searching for your business.</small>
-              </div>
-            </div>
-          </div>
+          <button type="button" class="nfc-demo" data-render="nfc" aria-label="Tap the NFC review card"></button>
         </article>
       </div>
     </div>
   </section>
 
-  <div data-render="bigwords"></div>
-
-  <!-- 6. How it works -->
+  <!-- 7. How it works -->
   <section class="section" id="how">
     <div class="container">
-      <div class="section-head center rv">
+      <div class="section-head center">
         <span class="eyebrow">How it works</span>
         <h2>From free audit to live in <span class="hl">four steps</span>.</h2>
       </div>
@@ -180,36 +202,36 @@ try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n
     </div>
   </section>
 
-  <!-- 7. Pricing -->
+  <!-- 8. Pricing -->
   <section class="section" id="pricing">
     <div class="container">
-      <div class="section-head center rv">
+      <div class="section-head center">
         <span class="eyebrow">Pricing</span>
-        <h2>Pick how much <span class="hl">second layer</span> you need.</h2>
-        <p>Three packages cover most local businesses. Every price is a starting point, confirmed after your free audit.</p>
+        <h2>Clear <span class="hl">starting prices</span>.</h2>
+        <p>Four services. You get the scope, timeline and final cost before any work begins.</p>
       </div>
       <div class="center"><div data-render="region"></div></div>
-      <div data-render="packages"></div>
-      <p class="center rv" style="margin-top:32px"><a class="link-arrow" href="pricing.html" data-icon-after="arrow">See all services and prices</a></p>
+      <div data-render="price-tiles"></div>
+      <p class="center" style="margin-top:28px"><a class="link-arrow" href="/pricing" data-icon-after="arrow">See everything that's included</a></p>
     </div>
   </section>
 
-  <!-- 8. Work: coming soon -->
+  <!-- 9. Work: coming soon -->
   <section class="section soon" id="work">
     <div class="container">
-      <span class="eyebrow rv"><i class="pulse-dot"></i>Portfolio and projects</span>
-      <div class="soon-word rv" aria-label="Coming soon">
+      <span class="eyebrow"><i class="pulse-dot"></i>Portfolio and projects</span>
+      <div class="soon-word" aria-label="Coming soon">
         <span class="o" aria-hidden="true">Coming</span>
         <span class="f" aria-hidden="true">Soon</span>
       </div>
-      <p class="rv">We are a new studio and we will not fake a portfolio. Until our first client projects go live, <strong style="color:var(--text);font-weight:500">this website is our first project</strong>. Judge us by it.</p>
+      <p>We are a new studio and we will not fake a portfolio. Until our first client projects go live, <strong style="color:var(--text);font-weight:500">this website is our first project</strong>. Judge us by it.</p>
     </div>
   </section>
 
-  <!-- 9. Questions -->
+  <!-- 10. Questions -->
   <section class="section" id="faq">
     <div class="container">
-      <div class="section-head center rv">
+      <div class="section-head center">
         <span class="eyebrow">Questions</span>
         <h2>Straight answers.</h2>
       </div>
@@ -217,15 +239,15 @@ try{var n=navigator,m=matchMedia('(prefers-reduced-motion: reduce)').matches,c=n
     </div>
   </section>
 
-  <!-- 10. Final call to action -->
-  <section class="section">
+  <!-- 11. Final call to action (overlaps the footer) -->
+  <section class="section cta-section">
     <div class="container" data-render="cta"></div>
   </section>
 </main>
 
 <footer id="site-footer"></footer>
-<script src="assets/js/content.js" defer></script>
-<script src="assets/js/site.js" defer></script>
-<script src="assets/js/hero3d.js" defer></script>
+<script src="/assets/js/content.js" defer></script>
+<script src="/assets/js/site.js" defer></script>
+<script src="/assets/js/hero3d.js" defer></script>
 </body>
 </html>

@@ -43,9 +43,15 @@ Never put the webhook address in the website files.
 Everything is in `assets/js/content.js`:
 
 - **WhatsApp:** set `whatsapp` to your number, digits only with country code (for example `919876543210`). The WhatsApp button appears on its own.
-- **Prices:** change the numbers under `packages` and `pricing`. `in` is rupees, `intl` is US dollars.
+- **Prices and what's included:** edit `plans`. `in` is rupees, `intl` is US dollars. Also update `from` under `services` so the service cards show the same price.
+- **Service text:** edit `services` (name, tagline, description and bullet list).
 - **Founding offer banner:** set `foundingOffer` under `flags` to `false` to hide it.
-- **Photos:** each `img` value is an Unsplash photo id.
+- **Photos:** stored in `assets/img/photos` in three sizes (480, 800 and 1200 pixels wide). Each `img` value in `content.js` is the file name without the size, for example `website-design-for-local-business`. The photos are from Unsplash (free licence).
+- **Free business check questions:** edit `check`.
+
+## After every update
+
+Re-upload the changed files to GitHub (**Add file > Upload files**, then commit). Files with the same name are replaced. Vercel republishes within a minute.
 
 ## Files
 

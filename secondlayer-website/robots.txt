@@ -1,3 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://secondlayer.co.in/sitemap.xml
+Disallow: /thank-you
+Disallow: /api/
+
+Sitemap: https://www.secondlayer.co.in/sitemap.xml

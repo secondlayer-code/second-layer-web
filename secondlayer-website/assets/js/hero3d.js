@@ -4,6 +4,10 @@
   var root = document.documentElement;
   var hero = document.getElementById('hero');
   var canvas = document.getElementById('hero-canvas');
+  // Turning animations back on from the off switch reloads, so the 3D hero can start cleanly.
+  window.addEventListener('sl:motion', function (e) {
+    if (!e.detail.off && hero && !root.classList.contains('has-3d') && root.getAttribute('data-3d-capable') === '1') location.reload();
+  });
   if (!hero || !canvas || !root.classList.contains('has-3d')) return;
   var stage = hero.querySelector('.hero-stage');
   var heroA = hero.querySelector('.hero-a');
@@ -93,8 +97,18 @@
     var gg = gc.getContext('2d'), rg = gg.createRadialGradient(64, 64, 0, 64, 64, 64);
     rg.addColorStop(0, 'rgba(192,107,216,0.55)'); rg.addColorStop(0.45, 'rgba(106,63,209,0.22)'); rg.addColorStop(1, 'rgba(0,0,0,0)');
     gg.fillStyle = rg; gg.fillRect(0, 0, 128, 128);
-    var glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(gc), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true }));
+    var glowMat = new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(gc), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
+    var glow = new THREE.Sprite(glowMat);
     glow.scale.setScalar(6.5); glow.position.z = -1.5; rig.add(glow);
+    // Additive glow vanishes on a light page, so light mode uses a soft normal blend instead.
+    function applyTheme() {
+      var light = root.getAttribute('data-theme') === 'light';
+      glowMat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+      glowMat.opacity = light ? 0.55 : 1;
+      glowMat.needsUpdate = true;
+    }
+    applyTheme();
+    if ('MutationObserver' in window) new MutationObserver(applyTheme).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 
     var base = {}, viewW = 1, viewH = 1;
     function layout() {
@@ -103,11 +117,28 @@
       renderer.setSize(w, h, false);
       camera.aspect = w / h; camera.updateProjectionMatrix();
       viewH = 2 * DIST * Math.tan(FOV * Math.PI / 360); viewW = viewH * camera.aspect;
-      if (camera.aspect < 0.95) base = { x: 0, yA: -viewH * 0.29, yB: -viewH * 0.2, sA: Math.min(0.6, viewW / 4.3), sB: Math.min(0.8, viewW / 3.3) };
+      if (camera.aspect < 0.95) {
+        // Phones: put the tiles in the free space between the hero text and the bottom dock,
+        // so they never sit behind the headline or the button.
+        var px2w = viewH / h, sTop = stage.getBoundingClientRect().top;
+        var top = heroA ? heroA.getBoundingClientRect().bottom - sTop + 14 : h * 0.6;
+        var bottom = h - (w < 960 ? 92 : 24);
+        var room = Math.max(bottom - top, 120);
+        var mid = Math.min(top + room / 2, h - 70);
+        // End of the scroll: the stacked tiles and their two labels sit between "The idea" text and the dock.
+        var heroB = hero.querySelector('.hero-b');
+        var topB = heroB ? heroB.getBoundingClientRect().bottom - sTop + 16 : h * 0.42;
+        var roomB = Math.max(bottom - topB, 160);
+        var midB = topB + roomB / 2;
+        base = { x: 0, yA: (0.5 - mid / h) * viewH, yB: (0.5 - midB / h) * viewH, sA: Math.min(0.6, viewW / 4.3, room * px2w / 2.5), sB: Math.min(0.8, viewW / 3.3, roomB * px2w / 3.1) };
+      }
       else base = { x: Math.min(viewW * 0.25, 2.7), yA: 0, yB: -0.05, sA: Math.min(1, viewW / 8.5), sB: Math.min(1.15, viewW / 7.5) };
     }
     layout();
     window.addEventListener('resize', layout);
+    // Web fonts arriving change the height of the hero text, so lay out again whenever it resizes.
+    if ('ResizeObserver' in window && heroA) new ResizeObserver(function () { layout(); }).observe(heroA);
+    if (document.fonts && document.fonts.addEventListener) document.fonts.addEventListener('loadingdone', layout);
 
     var p = 0, target = 0, px = 0, py = 0, tpx = 0, tpy = 0, running = false, raf = 0, t0 = performance.now(), ready = false;
     function measure() {
@@ -146,11 +177,13 @@
       renderer.render(scene, camera);
       if (!ready) { ready = true; root.classList.add('three-ready'); }
     }
-    function go() { if (!running && !document.hidden) { running = true; raf = requestAnimationFrame(frame); } }
+    function go() { if (!running && !document.hidden && root.classList.contains('has-3d')) { running = true; raf = requestAnimationFrame(frame); } }
     function stop() { running = false; cancelAnimationFrame(raf); }
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (en) { if (en[0].isIntersecting) go(); else stop(); }).observe(hero);
     } else go();
-    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else { measure(); if (hero.getBoundingClientRect().bottom > 0) go(); } });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else if (root.classList.contains('has-3d')) { measure(); if (hero.getBoundingClientRect().bottom > 0) go(); } });
+    // Animations switched off: stop rendering and fall back to the static hero.
+    window.addEventListener('sl:motion', function (e) { if (e.detail.off) { stop(); fail(); } });
   }
 })();
